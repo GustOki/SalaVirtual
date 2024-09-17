@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SALA VIRTUAL</title>
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/aluno.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <script src="../../static/js/aluno.js" defer></script>
+
+    <!-- Link para o arquivo JavaScript -->
+    <script src="../../static/js/aluno.js" defer></script>
+</head>
+
+<body>
+    <header class="cabecalho">
+        <div class="container">
+            <div id="container_icons">
+                <nav>
+                    <ul class="ul-icons">
+                        <li class="icons_header dropdown">
+                            <i class="bi bi-person-circle" id="profile-icon"></i>
+
+                            <div id="profile-menu" class="dropdown-menu">
+                                <a href="/editar_perfil/{{user.id}}"><i class="bi bi-pencil-square"></i>Editar perfil</a>
+                                <a href="{{ url_for('logout') }}"><i class="bi bi-box-arrow-left"></i>Desconectar</a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+            <ul class="ul-menu">
+                <div class="div_title_header">
+                    <h1 id="title_header">SALA VIRTUAL</h1>
+                </div>
+            </ul>
+        </div>
+    </header>
+
+    <section class="section_menu">
+        <h2 class="title_user_section">Olá, {{ user.nome }}!</h2>
+
+        <div class="div_turmas">
+            <h2 id="title_section_turmas">Sua(s) turma(s) cadastrada(s):</h2>
+
+            <div class="turmas_lista">
+                <ul id="lista_turmas">
+                    {% if aluno.turmas | length < 1 %}
+                        <p id="sem_turmas_msg">Nenhuma turma disponível no momento...</p>
+                    {% else %}
+                        {% for turma in aluno.turmas %}
+                            <li class="li_turma">
+                                <div>
+                                    <p id="info_turma"></p>
+                                </div>
+                                <div class="buttons_li">
+                                    <a href="{{ url_for('turma', turma_id=turma.id) }}" id="ver-btn">{{ turma.nome }} - Professor: {{ turma.professor }}</a>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    {% endif %}
+                </ul>
+            </div>
+
+            <div class="div_inserir_codigo">
+                <h2 id="title_inserir_codigo">Digite o código da turma para acessar:</h2>
+                <form id="form_codigo_turma" action="/acessar_turma" method="POST">
+                    <input type="text" id="codigo_turma" name="codigo_turma" placeholder="Código da turma" required>
+                    <button type="submit">Acessar Turma</button>
+                </form>
+            </div>
+            
+        </div>
+    </section>
+
+    <footer>
+        <div id="div_footer">
+            <p>SALA VIRTUAL</p>
+            <p id="p_footer">Desenvolvido por Gustavo Oki e Jorge Henrique Lessa</p>
+        </div>
+    </footer>
+
+</body>
+</html>
