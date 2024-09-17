@@ -185,6 +185,8 @@ def professor(id: int):
 
 @app.route("/tarefa/<int:id>")
 def tarefa_detalhes(id: int):
+    if 'user_id' not in session:
+        return redirect("/login")
     tipo_perfil = session.get('tipo_perfil')
     tarefa = Tarefa.query.get_or_404(id)
     turma = tarefa.turma
