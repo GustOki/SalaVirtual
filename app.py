@@ -357,17 +357,17 @@ def cadastro():
     
     # Verificar se o email já existe
     if Usuario.query.filter_by(email=email).first():
-        flash("Email já cadastrado. Tente um email diferente!", "cadastro")
-        return redirect("/login")
+        flash("Email já cadastrado. Tente um email diferente!", "error")
+        return redirect("/register")
 
     # Verificar se o nome de usuário já existe
     if Usuario.query.filter_by(nome=nome).first():
-        flash("Nome de usuário já cadastrado. Escolha um nome diferente!", "cadastro")
-        return redirect("/login")
+        flash("Nome de usuário já cadastrado. Escolha um nome diferente!", "error")
+        return redirect("/register")
 
     if Usuario.query.filter_by(matricula=matricula).first():
-        flash("Matrícula já cadastrada. Tente uma matrícula diferente!", "cadastro")
-        return redirect("/login")
+        flash("Matrícula já cadastrada. Tente uma matrícula diferente!", "error")
+        return redirect("/register")
     
     if tipo_perfil == "aluno":
         novo_aluno = Aluno(nome=nome, senha=senha, email=email, matricula=matricula)
@@ -379,10 +379,11 @@ def cadastro():
 
     try:
         db.session.commit()
+        flash("Cadastro realizado com sucesso!", "success")
         return redirect("/login")
     except Exception as e:
-        flash(f"Erro ao cadastrar: {e}", "cadastro")
-        return redirect("/login")
+        flash(f"Erro ao cadastrar: {e}", "error")
+        return redirect("/register")
 
 @app.route("/entrar", methods=["POST"])
 def entrar():
@@ -401,7 +402,7 @@ def entrar():
         elif user.tipo_perfil == 'professor':
             return redirect(f"/professor/{user.id}")
     else:
-        flash("Usuário ou senha inválidos", "login")
+        flash("Usuário ou senha inválidos", "error")
         return redirect("/login")
 #<---------Rotas Auxiliares da Tarefa---------->
 @app.route('/download/<int:id>')
