@@ -265,7 +265,10 @@ def delete(id: int):
 
 @app.route("/edit/<int:id>", methods=["GET", "POST"])
 def edit(id: int):
+    
     tarefa = Tarefa.query.get_or_404(id)
+    tarefa.turma_id = tarefa.turma_id  # ou tarefa.turma_id = turma.id, dependendo da lógica
+
     if session.get('tipo_perfil') != 'professor':
         flash('Acesso negado. Apenas professores podem editar tarefas.', 'error')
         return redirect(f"/turma/{tarefa.turma_id}")
